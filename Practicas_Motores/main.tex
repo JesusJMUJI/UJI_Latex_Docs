@@ -1,0 +1,183 @@
+% ©2023 Alonso Madrigal Hernandez. Todos los derechos reservados. Este código es una creación original de Alonso Madrigal Hernandez y está protegido por las leyes de derechos de autor. %
+
+\documentclass[12pt]{article}
+\usepackage{graphicx} % Para imágenes
+\usepackage[english]{babel} % Idioma del documento
+\usepackage[colorlinks]{hyperref} % Para los enlaces
+\usepackage{fancyhdr} % Para encabezados y pies de página
+\usepackage{lastpage}
+\usepackage{titlesec} % Control sobre los títulos
+\usepackage{color} % Colores
+\usepackage{geometry} % Margenes
+\usepackage{afterpage}
+\usepackage{setspace} % Espaciado entre lineas
+\usepackage[dvipsnames]{xcolor}
+\usepackage{comment}
+\usepackage{xspace}
+\usepackage{fontspec}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,fit} % Add this line to include geometric shapes
+% \usepackage[none]{hyphenat}
+\hyphenpenalty=5000
+\tolerance=1000
+\usepackage[nopatch=footnote]{microtype}
+\usepackage{multicol}
+\usepackage[toc,lof,lot]{multitoc}
+
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{tablefootnote}
+\usepackage{xhfill}
+\usepackage{todonotes}
+
+\usepackage{csquotes}
+
+% \usepackage{plex-otf}
+\usepackage[sfdefault]{plex-sans}
+\usepackage{plex-serif}
+\usepackage{plex-mono}
+
+\usepackage[cache=false]{minted}
+\usemintedstyle{vs}
+\setminted{
+    frame=lines,
+    framesep=2mm,
+    baselinestretch=1.2,
+    fontsize=\small,
+    breaklines=true,
+    autogobble
+}
+
+% Configuración de márgenes
+\geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=20mm,
+ bottom=20mm
+}
+
+% Configuración del enlace de colores
+\hypersetup{
+    linkcolor=tocColor
+    ,citecolor=Green
+    ,filecolor=Mulberry
+    ,urlcolor=NavyBlue
+    ,menucolor=BrickRed
+    ,runcolor=Mulberry
+    ,linkbordercolor=BrickRed
+    ,citebordercolor=Green
+    ,filebordercolor=Mulberry
+    ,urlbordercolor=NavyBlue
+    ,menubordercolor=BrickRed
+    ,runbordercolor=Mulberry
+}
+
+
+\newcommand\ruleafter[1]{#1\ \hrulefill}
+\titleformat{\section}[hang]{\ttfamily\itshape\Large\bfseries\raggedright}{\thesection}{2pc}{\ruleafter}
+
+% \newcommand\ruleafter[1]{\parbox{\linewidth}{\centering #1\ \rule[0.5ex]{5em}{0.4pt}}}
+% \titleformat{\section}[hang]{\ttfamily\itshape\Large\bfseries\raggedright}{\thesection}{2pc}{\ruleafter}
+
+\titlespacing*{\section}{0pt}{0pt}{8pt}
+
+% Configuración de párrafos
+% \setlength{\parindent}{15pt} % Sangría
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{1em} % Espaciado entre párrafos
+
+% Encabezados y pies de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\color{textColor}\ttfamily\itshape Motores}
+\fancyhead[R]{\color{textColor}\ttfamily\itshape Jesús Jiménez Montero}
+
+\fancyfoot[L]{\color{textColor}\ttfamily\itshape\raggedright\parbox[t]{0.4\textwidth}{\leftmark}}
+\fancyfoot[C]{\color{textColor}\hfill\makebox[0pt][c]{\hyperlink{toc}{\itshape Volver al Índice}}\hfill}
+\fancyfoot[R]{\color{textColor}\ttfamily\itshape\hfill Página \thepage \xspace de \pageref*{LastPage}}
+
+
+\setlength{\headheight}{14.5pt}
+
+% \renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+% For subsections
+\titleformat{\subsection}[hang]{\large\bfseries}{\thesubsection}{1em}{}\titlespacing*{\subsection}{1em}{*1}{*1}
+
+% For subsubsections
+\titleformat{\subsubsection}[hang]{\normalsize\bfseries}{\thesubsubsection}{1em}{}\titlespacing*{\subsubsection}{2.5em}{*1}{*1}
+
+\definecolor{pageColor}{RGB}{250,248,245}
+\definecolor{textColor}{RGB}{61, 61, 61}
+\definecolor{tocColor}{RGB}{9, 138, 177}
+% Configuración del documento
+
+\setlength{\marginparwidth}{2cm}
+
+\renewcommand*{\multicolumntoc}{2}
+\renewcommand*{\multicolumnlof}{2}
+\renewcommand*{\multicolumnlot}{2}
+
+% \setlength{\columnseprule}{1pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagecolor{pageColor}
+\color{textColor}
+% Portada
+\begin{titlepage}
+    \vspace*{\fill}
+
+    \centering
+    \parbox{0.8\textwidth}{    % Logo de la universidad
+        \includegraphics[width=0.7\textwidth]{imgs/marca-uji-color-fons-transparent.png}\par\vspace{1cm}
+
+        {\Huge \bfseries \textit{Practice 1 \&\& Practice 2} \par}
+        {\Large \bfseries John Lemon \&\& Tanks! \par}
+
+        % Información adicional
+        \textsc{\large }
+        \vspace{0.5cm} \\
+        \textsc{\Large VJ1227 - \textit{Game Engines}}
+        \vspace{0.5cm} \\
+        \textsc{\large Year: 2024 - 2025}
+        \vfill
+
+        % Nombres de los autores
+        \textbf{Made by:}         \\
+        \href{https://www.richardotomislav.com/}{Jesús Jiménez Montero}      \\
+    }
+    \vspace*{\fill}
+\end{titlepage}
+
+
+
+% Índice de contenidos
+%change the table of contents title
+% \renewcommand{\contentsname}{Indice del documento}
+\hypertarget{toc}{}
+
+\tableofcontents
+
+\newpage
+
+% \renewcommand{\listtablename}{Lista de }
+\listoftables
+\newpage
+
+% Índice de figuras
+% \listoffigures
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BEGINNING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/practice1.tex}
+
+\end{document}

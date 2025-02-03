@@ -1,0 +1,12 @@
+\section{Exercises 1}
+
+\begin{minted}[label=UnityScrtip]{csharp}
+    void Patroller()
+    {
+        if(agent.remainingDistance < agent.stoppingDistance)
+        {
+            currentWaypoint = (currentWaypoint + 1) % waypoints.Length;
+            agent.SetDestination(waypoints[currentWaypoint].position);
+        }
+    }
+\end{minted}
