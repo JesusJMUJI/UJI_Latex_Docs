@@ -39,17 +39,22 @@
 \usepackage{plex-serif}
 \usepackage{plex-mono}
 
-\usepackage[cache=false]{minted}
-\usemintedstyle{vs}
-\setminted{
-    frame=lines,
-    framesep=2mm,
-    baselinestretch=1.2,
-    fontsize=\small,
-    breaklines=true,
-    autogobble
-}
+\usepackage{listings}
+\usepackage{xcolor}
 
+\lstset{
+    language=[Sharp]C,
+    frame=lines,
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    numbers=left,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breakatwhitespace=true,
+    tabsize=4
+}
 % Configuración de márgenes
 \geometry{
  a4paper,
@@ -92,12 +97,12 @@
 % Encabezados y pies de página
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\color{textColor}\ttfamily\itshape Motores}
+\fancyhead[L]{\color{textColor}\ttfamily\itshape VJ1227 - Game Engines}
 \fancyhead[R]{\color{textColor}\ttfamily\itshape Jesús Jiménez Montero}
 
 \fancyfoot[L]{\color{textColor}\ttfamily\itshape\raggedright\parbox[t]{0.4\textwidth}{\leftmark}}
-\fancyfoot[C]{\color{textColor}\hfill\makebox[0pt][c]{\hyperlink{toc}{\itshape Volver al Índice}}\hfill}
-\fancyfoot[R]{\color{textColor}\ttfamily\itshape\hfill Página \thepage \xspace de \pageref*{LastPage}}
+\fancyfoot[C]{\color{textColor}\hfill\makebox[0pt][c]{\hyperlink{toc}{\itshape Return to Index}}\hfill}
+\fancyfoot[R]{\color{textColor}\ttfamily\itshape\hfill Page \thepage \xspace de \pageref*{LastPage}}
 
 
 \setlength{\headheight}{14.5pt}
