@@ -1,15 +1,46 @@
 \section[Exersice 1. More Ghosts]{Exercise 1\\ {\large More Ghosts}}
 
-\begin{lstlisting}[caption=UnityScript]
-    void Patroller()
-    {
-        if(agent.remainingDistance < agent.stoppingDistance)
+    To solve this, I just created a new script \texttt{ChaserGhostSpanwer}, adding a new behaviour to the \texttt{WaypointControl}. With a toggle, the Ghost can be set as a \textit{chaser} or \textit{patroller}
+
+    \begin{minted}[label=UnityScript]{csharp}
+        [SerializeField] private bool isChaserGhost;
+        [Header("Chase Settings")]
+        [SerializeField] private float destinationReachedThreshold = 1f;
+        [Tooltip("Distance in meters to consider the ghost has reached its destination")]
+        [Range(0.1f, 5f)]
+        [SerializeField] private float patrolReachedThreshold = 0.5f;
+
+        void Start()
         {
-            currentWaypoint = (currentWaypoint + 1) % waypoints.Length;
-            agent.SetDestination(waypoints[currentWaypoint].position);
+            transform.position = waypoint3Transform.position;
         }
-    }
-\end{lstlisting}
+
+        void Update()
+        {
+            // Debug.Log($"Remaining distance: {agent.remainingDistance}");
+            if(isChaserGhost)
+                ChaserGhost();
+            else
+                Patroller();
+        }
+
+        void ChaserGhost()
+        {
+            // Skip if still moving towards destination
+            if (agent.pathPending || agent.remainingDistance > destinationReachedThreshold) return;
+
+            if (!SafeZoneManager.Instance.ReturnIsSafe())
+            {
+                observer.transform.gameObject.SetActive(true);
+                agent.SetDestination(playerTransform.position);
+            }
+            else
+            {
+                observer.transform.gameObject.SetActive(false);
+                agent.SetDestination(waypoint3Transform.position);
+            }
+        }
+    \end{minted}
 
 \section[Exersice 2. Be Safe]{Exercise 2\\ {\large Be Safe}}
 

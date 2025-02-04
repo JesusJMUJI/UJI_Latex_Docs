@@ -34,26 +34,30 @@
 
 \usepackage{csquotes}
 
-% \usepackage{plex-otf}
 \usepackage[sfdefault]{plex-sans}
 \usepackage{plex-serif}
 \usepackage{plex-mono}
+\newfontfamily\JetBrainsMono{JetBrains Mono}[
+    Path = ./fonts/,
+    UprightFont = JetBrainsMono[wght].ttf,
+    ItalicFont = JetBrainsMono-Italic[wght].ttf,
+    RawFeature = {+axis={wght=400}},
+    BoldFeatures = {RawFeature={+axis={wght=700}}},
+    ItalicFeatures = {RawFeature={+axis={wght=400}}},
+    BoldItalicFeatures = {RawFeature={+axis={wght=700}}}
+]
 
-\usepackage{listings}
-\usepackage{xcolor}
-
-\lstset{
-    language=[Sharp]C,
+\usepackage{minted}
+\usepackage{etoolbox}
+\AtBeginEnvironment{minted}{\JetBrainsMono}
+\setminted{
+    style=manni,
     frame=lines,
-    basicstyle=\small\ttfamily,
+    fontsize=\small,
     breaklines=true,
     numbers=left,
-    keywordstyle=\color{blue},
-    commentstyle=\color{green!60!black},
-    stringstyle=\color{red},
-    showstringspaces=false,
-    breakatwhitespace=true,
-    tabsize=4
+    tabsize=4,
+    gobble=8,
 }
 % Configuración de márgenes
 \geometry{
