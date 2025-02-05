@@ -11,6 +11,7 @@
 *.cb
 *.cb2
 .*.lb
+**/.out/
 
 ## Intermediate documents:
 *.dvi
@@ -304,3 +305,4 @@ Main.pdf
 .idea/
 
 Analisis_Audiovisual/Recursos/Meet the Spy (Upscaled) (2160p_24fps_VP9 LQ-160kbit_Opus).webm
+Practicas_Motores/out

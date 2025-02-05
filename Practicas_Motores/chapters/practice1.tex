@@ -1,8 +1,10 @@
 \section[Exersice 1. More Ghosts]{Exercise 1\\ {\large More Ghosts}}
 
-    To solve this, I just created a new script \texttt{ChaserGhostSpanwer}, adding a new behaviour to the \texttt{WaypointControl}. With a toggle, the Ghost can be set as a \textit{chaser} or \textit{patroller}
+    To solve this, I just created a new script \texttt{ChaserGhostSpawner}, adding a new behaviour to the \texttt{WaypointControl}. With a toggle, the Ghost can be set as a \textit{chaser} or \textit{patroller}.
 
-    \begin{minted}[label=UnityScript]{csharp}
+    Also, the Ghost spawns at  \texttt{void Start()} by using the reference to the \texttt{Waypoint (3)} transform.
+
+    \begin{minted}[label=Viewpoint.cs]{csharp}
         [SerializeField] private bool isChaserGhost;
         [Header("Chase Settings")]
         [SerializeField] private float destinationReachedThreshold = 1f;
@@ -44,8 +46,147 @@
 
 \section[Exersice 2. Be Safe]{Exercise 2\\ {\large Be Safe}}
 
+    \begin{minted}[label=SafeZoneManager.cs]{csharp}
+        public static SafeZoneManager Instance { get; private set; }
+
+        [SerializeField] private bool isInSafeZone;
+
+        [SerializeField] private List<SafeZone> safeZones;
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this) Destroy(gameObject);
+            else Instance = this;
+        }
+
+        void Start()
+        {
+            isInSafeZone = false;
+        }
+
+        private void SetSafeZone(bool value)
+        {
+            isInSafeZone = value;
+        }
+
+        public bool ReturnIsSafe()
+        {
+            return isInSafeZone;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.TryGetComponent<SafeZone>(out _))
+            {
+                SetSafeZone(true);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if(other.TryGetComponent<SafeZone>(out _))
+            {
+                SetSafeZone(false);
+            }
+        }
+    \end{minted}
+
 % section i cannot survive
 \section[Exercise 3. I Cannot Survive]{Exercise 3\\ {\large I Cannot Survive}}
 
+    I created a new script that basically has a necceary reference to everything that the \texttt{WaypointControl.cs} needs to work; then at \texttt{void Start()}, I start a new infinite coroutine that spawns a Ghost every second.
+    \begin{minted}[label=ChaserGhost.cs]{csharp}
+        public GameObject chaserGhostPrefab;
+        public Transform waypoint3Transform;
+        public Transform playerTransform;
+        public GameEnding gameEnding;
+
+        void Start()
+        {
+            StartCoroutine(SpawnGhosts());
+        }
+
+        IEnumerator SpawnGhosts()
+        {
+            while (true)
+            {
+                GameObject spawnedGhost = Instantiate(chaserGhostPrefab, waypoint3Transform.position, Quaternion.identity);
+
+                // Setup WaypointControl
+                WaypointControl waypointControl = spawnedGhost.GetComponent<WaypointControl>();
+                waypointControl.playerTransform = playerTransform;
+                waypointControl.waypoint3Transform = waypoint3Transform;
+
+                // Setup Observer
+                Observer observer = spawnedGhost.GetComponentInChildren<Observer>();
+                observer.player = playerTransform;
+                observer.gameEnding = gameEnding;
+
+                yield return new WaitForSeconds(1f);
+            }
+        }
+    \end{minted}
+
+    And simply, to disable the Ghost POV when the player is in a safe zone, I call the instance of the SafeZoneManager and check the bool, then disable the POV object when John it's inside a safezone.
+    \begin{minted}{csharp}
+        void ChaserGhost()
+        {
+            // Skip check if Ghost still has some distance to reach its destination, so it's not instant
+            if (agent.pathPending || agent.remainingDistance > destinationReachedThreshold) return;
+
+            if (!SafeZoneManager.Instance.ReturnIsSafe())
+            {
+                observer.transform.gameObject.SetActive(true);
+                agent.SetDestination(playerTransform.position);
+            }
+            else
+            {
+                observer.transform.gameObject.SetActive(false);
+                agent.SetDestination(waypoint3Transform.position);
+            }
+        }
+    \end{minted}
 % section new mechanic
 \section[Exercise 4. New Mechanic]{Exercise 4\\ {\large New Mechanic}}
+
+    \begin{minted}[label=PlayerMovement.cs]{csharp}
+        private bool isDashing = false;
+        private bool canDash = true;
+        private float dashTimeLeft;
+        private float cooldownTimeLeft;
+        ...
+
+        void FixedUpdate()
+        {
+            ...
+
+            if (!canDash)
+            {
+                cooldownTimeLeft -= Time.fixedDeltaTime;
+                if (cooldownTimeLeft <= 0)
+                {
+                    canDash = true;
+                }
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift) && canDash && (horizontal != 0 || vertical != 0))
+            {
+                isDashing = true;
+                canDash = false;
+                dashTimeLeft = dashDuration;
+                cooldownTimeLeft = dashCooldown;
+            }
+
+            if (isDashing)
+            {
+                dashTimeLeft -= Time.fixedDeltaTime;
+                if (dashTimeLeft <= 0)
+                {
+                    isDashing = false;
+                }
+            }
+
+            ...
+        }
+
+    \end{minted}
