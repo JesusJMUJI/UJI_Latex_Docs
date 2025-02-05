@@ -3,12 +3,11 @@
     To solve this, I just created a new script \texttt{ChaserGhostSpawner}, adding a new behaviour to the \texttt{WaypointControl}. With a toggle, the Ghost can be set as a \textit{chaser} or \textit{patroller}.
 
     Also, the Ghost spawns at  \texttt{void Start()} by using the reference to the \texttt{Waypoint (3)} transform.
-
-    \begin{minted}[label=Viewpoint.cs]{csharp}
+    \begin{listing}[htbp]
+    \begin{minted}{csharp}
         [SerializeField] private bool isChaserGhost;
         [Header("Chase Settings")]
         [SerializeField] private float destinationReachedThreshold = 1f;
-        [Tooltip("Distance in meters to consider the ghost has reached its destination")]
         [Range(0.1f, 5f)]
         [SerializeField] private float patrolReachedThreshold = 0.5f;
 
@@ -31,7 +30,7 @@
             // Skip if still moving towards destination
             if (agent.pathPending || agent.remainingDistance > destinationReachedThreshold) return;
 
-            if (!SafeZoneManager.Instance.ReturnIsSafe())
+            if (!playerTransform.GetComponent<PlayerMovement>().ReturnIsSafe())
             {
                 observer.transform.gameObject.SetActive(true);
                 agent.SetDestination(playerTransform.position);
@@ -43,36 +42,18 @@
             }
         }
     \end{minted}
+    \caption{ChaserGhost.cs}
+    \label{lst:chaserghost}
+    \end{listing}
 
+\newpage
 \section[Exersice 2. Be Safe]{Exercise 2\\ {\large Be Safe}}
 
-    \begin{minted}[label=SafeZoneManager.cs]{csharp}
-        public static SafeZoneManager Instance { get; private set; }
+    I added new methods on John to check for a new \texttt{SafeZone} script. The \texttt{SafeZone} script is blank, but it's the easiest and fastest way to check if John is inside a safe zone.
 
+    To make the Ghosts go to the spawn position, you can see the method \texttt{ChaserGhost()} in Exercise \ref{lst:chaserghost} (\textit{Line 33 and 34, on the else statement.})
+    \begin{minted}[label=SafeZoneManager.cs, fontsize=\footnotesize]{csharp}
         [SerializeField] private bool isInSafeZone;
-
-        [SerializeField] private List<SafeZone> safeZones;
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this) Destroy(gameObject);
-            else Instance = this;
-        }
-
-        void Start()
-        {
-            isInSafeZone = false;
-        }
-
-        private void SetSafeZone(bool value)
-        {
-            isInSafeZone = value;
-        }
-
-        public bool ReturnIsSafe()
-        {
-            return isInSafeZone;
-        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -89,12 +70,25 @@
                 SetSafeZone(false);
             }
         }
+
+        private void SetSafeZone(bool value)
+        {
+            isInSafeZone = value;
+        }
+
+        public bool ReturnIsSafe()
+        {
+            return isInSafeZone;
+        }
     \end{minted}
 
 % section i cannot survive
+\newpage
 \section[Exercise 3. I Cannot Survive]{Exercise 3\\ {\large I Cannot Survive}}
 
-    I created a new script that basically has a necceary reference to everything that the \texttt{WaypointControl.cs} needs to work; then at \texttt{void Start()}, I start a new infinite coroutine that spawns a Ghost every second.
+    I created a new script that basically has a reference to everything that the \texttt{WaypointControl.cs} needs to work; then at \texttt{void Start()}, I start a new infinite coroutine that spawns a Ghost every second.
+
+    And to make the Ghosts be able to or not capture John, in the Exercise \ref{lst:chaserghost} (\textit{Lines 28 and 33, on the else statement.}) I just disable the PoV object when John is inside a safezone.
     \begin{minted}[label=ChaserGhost.cs]{csharp}
         public GameObject chaserGhostPrefab;
         public Transform waypoint3Transform;
@@ -114,41 +108,24 @@
 
                 // Setup WaypointControl
                 WaypointControl waypointControl = spawnedGhost.GetComponent<WaypointControl>();
-                waypointControl.playerTransform = playerTransform;
+                waypointControl.playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
                 waypointControl.waypoint3Transform = waypoint3Transform;
 
                 // Setup Observer
                 Observer observer = spawnedGhost.GetComponentInChildren<Observer>();
-                observer.player = playerTransform;
+                // find with tag
+                observer.player = GameObject.FindGameObjectWithTag("Player").transform;
                 observer.gameEnding = gameEnding;
 
                 yield return new WaitForSeconds(1f);
             }
         }
     \end{minted}
-
-    And simply, to disable the Ghost POV when the player is in a safe zone, I call the instance of the SafeZoneManager and check the bool, then disable the POV object when John it's inside a safezone.
-    \begin{minted}{csharp}
-        void ChaserGhost()
-        {
-            // Skip check if Ghost still has some distance to reach its destination, so it's not instant
-            if (agent.pathPending || agent.remainingDistance > destinationReachedThreshold) return;
-
-            if (!SafeZoneManager.Instance.ReturnIsSafe())
-            {
-                observer.transform.gameObject.SetActive(true);
-                agent.SetDestination(playerTransform.position);
-            }
-            else
-            {
-                observer.transform.gameObject.SetActive(false);
-                agent.SetDestination(waypoint3Transform.position);
-            }
-        }
-    \end{minted}
 % section new mechanic
+\newpage
 \section[Exercise 4. New Mechanic]{Exercise 4\\ {\large New Mechanic}}
 
+    For the new mechanic, I added a simple dash.
     \begin{minted}[label=PlayerMovement.cs]{csharp}
         private bool isDashing = false;
         private bool canDash = true;

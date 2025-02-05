@@ -23,7 +23,7 @@
 \tolerance=1000
 \usepackage[nopatch=footnote]{microtype}
 \usepackage{multicol}
-\usepackage[toc,lof,lot]{multitoc}
+% \usepackage[toc,lof,lot]{multitoc}
 
 \usepackage{enumitem}
 \usepackage{booktabs}
@@ -37,6 +37,7 @@
 \usepackage[sfdefault]{plex-sans}
 \usepackage{plex-serif}
 \usepackage{plex-mono}
+
 \newfontfamily\JetBrainsMono{JetBrains Mono}[
     Path = ./fonts/,
     UprightFont = JetBrainsMono[wght].ttf,
@@ -52,13 +53,14 @@
 \AtBeginEnvironment{minted}{\JetBrainsMono}
 \setminted{
     style=tango,
-    frame=lines,
-    fontsize=\small,
+    % frame=lines,
+    fontsize=\footnotesize,
     breaklines=true,
     numbers=left,
     tabsize=4,
     gobble=8,
 }
+
 % Configuración de márgenes
 \geometry{
  a4paper,
@@ -106,7 +108,7 @@
 
 \fancyfoot[L]{\color{textColor}\ttfamily\itshape\raggedright\parbox[t]{0.4\textwidth}{\leftmark}}
 \fancyfoot[C]{\color{textColor}\hfill\makebox[0pt][c]{\hyperlink{toc}{\itshape Return to Index}}\hfill}
-\fancyfoot[R]{\color{textColor}\ttfamily\itshape\hfill Page \thepage \xspace de \pageref*{LastPage}}
+\fancyfoot[R]{\color{textColor}\ttfamily\itshape\hfill Page \thepage \xspace of \pageref*{LastPage}}
 
 
 \setlength{\headheight}{14.5pt}
@@ -128,9 +130,9 @@
 
 \setlength{\marginparwidth}{2cm}
 
-\renewcommand*{\multicolumntoc}{2}
-\renewcommand*{\multicolumnlof}{2}
-\renewcommand*{\multicolumnlot}{2}
+% \renewcommand*{\multicolumntoc}{2}
+% \renewcommand*{\multicolumnlof}{2}
+% \renewcommand*{\multicolumnlot}{2}
 
 % \setlength{\columnseprule}{1pt}
 
@@ -146,8 +148,8 @@
     \parbox{0.8\textwidth}{    % Logo de la universidad
         \includegraphics[width=0.7\textwidth]{imgs/marca-uji-color-fons-transparent.png}\par\vspace{1cm}
 
-        {\Huge \bfseries \textit{Practice 1 \&\& Practice 2} \par}
-        {\Large \bfseries John Lemon \&\& Tanks! \par}
+        {\Huge \bfseries \textit{Practice 1} \par}
+        {\Large \bfseries John Lemon's Haunted Jaunt \par}
 
         % Información adicional
         \textsc{\large }
@@ -176,7 +178,6 @@
 \newpage
 
 % \renewcommand{\listtablename}{Lista de }
-\listoftables
 \newpage
 
 % Índice de figuras
